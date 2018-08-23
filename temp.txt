@@ -1,0 +1,39 @@
+
+
+func adminPart(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Method admin part: ", r.Method)
+	if r.Method == "GET" { //================GET===============
+		t, _ := template.ParseFiles("login.gtpl")
+		t.Execute(w, nil)
+	} else { //==================POST===============
+		r.ParseForm()
+		user := r.FormValue("username")
+		pass := r.FormValue("password")
+		//query := bson.M{"username": bson.M{"$eq": user}}
+		if r.FormValue("key") == "qqq" {
+			t, _ := template.ParseFiles("adduser.gtpl")
+			data := user + pass
+			usersCol.Find(bson.M{}).All(&data)
+			t.Execute(w, nil)
+		} else {
+			http.Redirect(w, r, "/adminpart", http.StatusSeeOther)
+		}
+	}
+}
+
+
+		var userEdit models.SickList
+		userEdit.Id = bson.ObjectId(r.FormValue("id"))
+		userEdit.FirstName = r.FormValue("firstName")
+		userEdit.LastName = r.FormValue("lastName")
+		userEdit.MiddleName = r.FormValue("middleName")
+		userEdit.SickList = r.FormValue("sickList")
+		userEdit.Snils = r.FormValue("snils")
+		userEdit.Stazh = r.FormValue("stazh")
+		userEdit.Date = time.Now()
+
+				sickListCol.Update(bson.M{"_id": bson.ObjectIdHex(r.FormValue("id"))},
+			bson.M{"$set": bson.M{"firstName": r.FormValue("firstName"),
+				"lastName": r.FormValue("lastName"), "middleName": r.FormValue("middleName"),
+				"sickList": r.FormValue("sickList"), "snils": r.FormValue("snils"), "stazh": r.FormValue("stazh"),
+				"date": time.Now}})

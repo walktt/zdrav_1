@@ -1,0 +1,21 @@
+{{ define "editSickList"}}
+{{template "header"}}
+<html>
+    <body>
+        {{range .}}
+        <form action="/edit" method="post">
+            <input type="hidden" name="id" value="{{.Id.Hex}}">
+            Номер больничного листа<input type="text" name="sickList" value="{{.SickList}}">
+            Фамилия:<input type="text" name="lastName"  value="{{.LastName}}">
+            Имя:<input type="text" name="firstName" value="{{.FirstName}}">
+            Отчество:<input type="text" name="middleName" value="{{.MiddleName}}">
+            СНИЛС:<input type="text" name="snils" value="{{.Snils}}">
+            Стаж:<input type="text" name="stazh" value="{{.Stazh}}">
+            <input type="submit" value="Сохранить">
+        </form>
+        {{end}}
+        <br>
+    </body>
+</html>
+{{template "footer"}}
+{{ end }}

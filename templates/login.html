@@ -1,0 +1,11 @@
+{{ define "login" }}
+{{template "header"}}
+        <h1>Введите пароль</h1><br>
+            <form action="/login" method="post">
+                Имя <input type="text" name="username">
+                Пароль <input type="text" name="password">
+                <input type="submit" value="Войти">
+            </form>
+
+{{template "footer"}}
+{{end}}

@@ -1,0 +1,40 @@
+{{ define "sickLists"}}
+{{template "header"}}
+        <form action="/add" method="post">
+            Номер больничного листа<input type="text" name="sickList">
+            Фамилия:<input type="text" name="lastName">
+            Имя:<input type="text" name="firstName">
+            Отчество:<input type="text" name="middleName">
+            СНИЛС:<input type="text" name="snils">
+            Стаж:<input type="text" name="stazh">
+            <input type="submit" value="Добавить">
+        </form>
+        <br>
+        <table>
+            <tr>
+                <th>Номер БЛ</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>СНИЛС</th>
+                <th>Стаж</th>
+                <th>ЛПУ</th>
+                <th>Действие</th>
+            </tr>
+            {{range . }}
+                <tr>
+                    <td>{{.SickList}}</td>
+                    <td>{{.LastName}}</td>
+                    <td>{{.FirstName}}</td>
+                    <td>{{.MiddleName}}</td>
+                    <td>{{.Snils}}</td>
+                    <td>{{.Stazh}}</td>
+                    <td>{{.Lpu}}</td>
+                    <td><a href="/edit?id={{.Id.Hex}}">Редактировать</a></td>
+                </tr>
+            {{end}}
+        </table>
+
+
+        {{template "footer"}}
+{{ end }}

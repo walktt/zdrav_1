@@ -1,0 +1,29 @@
+{{define "adduser"}}
+{{template "header"}}
+    <body>
+        <form action="/adduser" method="post">
+            Username:<input type="text" name="username">
+            Password:<input type="text" name="password">
+            Lpu:<select name="lpu">
+                <option>ГБ</option>
+                <option>ДГБ</option>
+                <option>Больница 1</option>
+                <option>Больница 2</option>
+                <option>Больница 3</option>
+                <option>ССМП</option>
+                <option>Стоматология</option>
+                <option>Амбулатория 1</option>
+                <option>Амбулатория 3</option>
+                <option>Амбулатория 4</option>
+                <option>Амбулатория 6</option>
+                <option>Амбулатория 7</option>
+                <option>Амбулатория 8</option>
+                <option></option>
+            </select>
+            <input type="submit" value="ADD">
+        </form>
+        <br>
+
+    </body>
+    {{template "footer"}}
+{{end}}
