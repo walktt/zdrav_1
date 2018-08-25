@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"zdrav/models"
+	"zdrav_1/models"
 
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -16,7 +16,7 @@ var sickListCol *mgo.Collection
 var usersCol *mgo.Collection
 
 const (
-	port = ":9087"
+	port = ":80"
 )
 
 func sickListHandler(w http.ResponseWriter, r *http.Request) {
