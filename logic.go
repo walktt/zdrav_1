@@ -16,7 +16,7 @@ var sickListCol *mgo.Collection
 var usersCol *mgo.Collection
 
 const (
-	port = ":9087"
+	port = ":9086"
 )
 
 func sickListHandler(w http.ResponseWriter, r *http.Request) {
@@ -151,7 +151,7 @@ func main() { //===================DB SETUP=================
 	//==================Listener=====================
 	http.Handle("/layout/", http.StripPrefix("/layout/", http.FileServer(http.Dir("templates/layout"))))
 	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/add", sickListHandler)
+	http.HandleFunc("/", sickListHandler)
 	//http.HandleFunc("/adminpart", adminPart)
 	http.HandleFunc("/adduser", addUser)
 	http.HandleFunc("/edit", editHandler)
