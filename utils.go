@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	"zdrav/models"
+	"zdrav_1/models"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"

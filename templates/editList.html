@@ -2,7 +2,7 @@
 {{template "header"}}
 <html>
     <body>
-        {{range .}}
+        
         <form action="/edit" method="post">
             <input type="hidden" name="id" value="{{.Id.Hex}}">
             Номер больничного листа<input type="text" name="sickList" value="{{.SickList}}">
@@ -13,8 +13,10 @@
             Стаж:<input type="text" name="stazh" value="{{.Stazh}}">
             <input type="submit" value="Сохранить">
         </form>
-        {{end}}
-        <br>
+        
+        <br><br><br>
+        <a href="/deleteSL?id={{.Id.Hex}}">Удалить</a>
+        
     </body>
 </html>
 {{template "footer"}}

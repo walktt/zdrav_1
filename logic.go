@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"zdrav/models"
+	"zdrav_1/models"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -35,8 +35,12 @@ func sickListHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			sickListCol.Find(bson.M{"lpu": user.Lpu}).All(&data)
 		}
-		fmt.Println("lpu: ", user.Lpu)
-		t.ExecuteTemplate(w, "sickLists", data)
+		SickListToShow := models.SLForEdit{
+			SLs:     data,
+			UserLpu: user.Lpu,
+		}
+		fmt.Println(data)
+		t.ExecuteTemplate(w, "sickLists", SickListToShow)
 	} else { //==================POST===============
 		r.ParseForm()
 		if r.FormValue("sickList") != "" {
@@ -49,7 +53,7 @@ func sickListHandler(w http.ResponseWriter, r *http.Request) {
 			sickList.Lpu = user.Lpu
 			sickList.Snils = r.FormValue("snils")
 			sickList.Stazh = r.FormValue("stazh")
-			sickList.Date = time.Now()
+			sickList.Date = time.Now().Format("01-02-2006")
 			addToCol(sickList, sickListCol)
 		}
 		http.Redirect(w, r, "/add", 302)
@@ -64,22 +68,50 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" { //================GET===============
 		id := r.FormValue("id")
-		fmt.Println(id)
 		t, _ := template.ParseFiles("templates/editList.html", "templates/header.html", "templates/footer.html")
-		data := []models.SickList{}
+		data := models.SickList{}
 		if user.Lpu == "" {
-			sickListCol.FindId(bson.ObjectIdHex(id)).All(&data)
+			sickListCol.FindId(bson.ObjectIdHex(id)).One(&data)
 		} else {
-			sickListCol.Find(bson.M{"_id": bson.ObjectIdHex(id), "lpu": user.Lpu}).All(&data)
+			sickListCol.Find(bson.M{"_id": bson.ObjectIdHex(id), "lpu": user.Lpu}).One(&data)
 		}
 		t.ExecuteTemplate(w, "editSickList", data)
 	} else { //==================POST===============
 		r.ParseForm()
 		fmt.Println((r.FormValue("id")))
 		sickListCol.Update(bson.M{"_id": bson.ObjectIdHex(r.FormValue("id"))},
-			bson.M{"$set": bson.M{"firstName": r.FormValue("firstName"),
+			bson.M{"$set": bson.M{"firstName": r.FormValue("firstName"), "time": time.Now().Format("01-02-2006"),
 				"lastName": r.FormValue("lastName"), "middleName": r.FormValue("middleName"),
 				"sickList": r.FormValue("sickList"), "stazh": r.FormValue("stazh"), "snils": r.FormValue("snils")}})
+		http.Redirect(w, r, "/add", 302)
+	}
+}
+
+func deleteSLHandler(w http.ResponseWriter, r *http.Request) {
+	user := checkSession(w, r)
+	if user.Username == "" {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
+	if r.Method == "GET" { //================GET===============
+		id := r.FormValue("id")
+		err := sickListCol.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+		if err != nil {
+			fmt.Println(err)
+		}
+		http.Redirect(w, r, "/add", 302)
+	}
+}
+
+func PassSLHandler(w http.ResponseWriter, r *http.Request) {
+	user := checkSession(w, r)
+	if user.Username == "" {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
+	if r.Method == "GET" { //================GET===============
+		id := r.FormValue("id")
+		sickListCol.Update(bson.M{"_id": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"pass": true}})
 		http.Redirect(w, r, "/add", 302)
 	}
 }
@@ -155,6 +187,8 @@ func main() { //===================DB SETUP=================
 	//http.HandleFunc("/adminpart", adminPart)
 	http.HandleFunc("/adduser", addUser)
 	http.HandleFunc("/edit", editHandler)
+	http.HandleFunc("/deleteSL", deleteSLHandler)
+	http.HandleFunc("/passSL", PassSLHandler)
 	http.HandleFunc("/logout", logoutHandler)
 	err1 := http.ListenAndServe(port, nil)
 	if err1 != nil {

@@ -20,11 +20,12 @@
                 <th>СНИЛС</th>
                 <th>Стаж</th>
                 <th>ЛПУ</th>
+                <th>Дата изменения</th>
                 <th>Действие</th>
             </tr>
         </thead>
         <tbody>
-            {{range . }}
+            {{range .SLs }}
                 <tr>
                     <td>{{.SickList}}</td>
                     <td>{{.LastName}}</td>
@@ -33,11 +34,22 @@
                     <td>{{.Snils}}</td>
                     <td>{{.Stazh}}</td>
                     <td>{{.Lpu}}</td>
-                    <td><a href="/edit?id={{.Id.Hex}}">Редактировать</a></td>
+                    <td>{{.Date}}</td>
+                    <td>
+                        <a href="/edit?id={{.Id.Hex}}">Редактировать</a>
+                        {{if (eq $.UserLpu "")}}
+                            {{if .Pass}}
+                            
+                            {{else}}
+                            <a href="/passSL?id={{.Id.Hex}}">Отработать</a>
+                            {{end}}
+                        {{end}}
+                    </td>
                 </tr>
             {{end}}
         </tbody>
         </table>
+        
 <script>
         $(document).ready(function() { 
                 $(".tablesorter").tablesorter();                 

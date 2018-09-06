@@ -1,10 +1,13 @@
 package models
 
 import (
-	"time"
-
 	"gopkg.in/mgo.v2/bson"
 )
+
+type SLForEdit struct {
+	SLs     []SickList
+	UserLpu string
+}
 
 type SickList struct {
 	Id         bson.ObjectId `bson:"_id"`
@@ -13,7 +16,8 @@ type SickList struct {
 	LastName   string        `bson:"lastName"`
 	MiddleName string        `bson:"middleName"`
 	Lpu        string        `bson:"lpu"`
-	Date       time.Time     `bson:"time"`
+	Date       string        `bson:"time"`
 	Snils      string        `bson:"snils"`
 	Stazh      string        `bson:"stazh"`
+	Pass       bool          `bson:"pass"`
 }
