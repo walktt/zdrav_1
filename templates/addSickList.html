@@ -1,16 +1,16 @@
 {{ define "sickLists"}}
 {{template "header"}}
     <form action="/add" method="post">
-            Номер больничного листа<input type="text" name="sickList">
-            Фамилия:<input type="text" name="lastName">
-            Имя:<input type="text" name="firstName">
+            Номер больничного листа<input type="text" name="sickList" required>
+            Фамилия:<input type="text" name="lastName" required>
+            Имя:<input type="text" name="firstName" required>
             Отчество:<input type="text" name="middleName">
             СНИЛС:<input type="text" name="snils">
             Стаж:<input type="text" name="stazh">
             <input type="submit" value="Добавить">
     </form>
     <br>
-    <table id="ttt" class="tablesorter">
+    <table id="ttt">
         <thead>
             <tr>
                 <th>Номер БЛ</th>

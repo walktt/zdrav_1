@@ -8,7 +8,7 @@ import (
 	"time"
 	"zdrav_1/models"
 
-	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -16,7 +16,7 @@ var sickListCol *mgo.Collection
 var usersCol *mgo.Collection
 
 const (
-	port = ":9086"
+	port = ":9080"
 )
 
 func sickListHandler(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +53,7 @@ func sickListHandler(w http.ResponseWriter, r *http.Request) {
 			sickList.Lpu = user.Lpu
 			sickList.Snils = r.FormValue("snils")
 			sickList.Stazh = r.FormValue("stazh")
-			sickList.Date = time.Now().Format("01-02-2006")
+			sickList.Date = time.Now().Format("02-01-2006")
 			addToCol(sickList, sickListCol)
 		}
 		http.Redirect(w, r, "/add", 302)
@@ -178,8 +178,8 @@ func main() { //===================DB SETUP=================
 		fmt.Println(err)
 	}
 	defer session.Close()
-	sickListCol = session.DB("localdb").C("sickLists")
-	usersCol = session.DB("localdb").C("users")
+	sickListCol = session.DB("cbdb").C("sickLists")
+	usersCol = session.DB("cbdb").C("users")
 	//==================Listener=====================
 	http.Handle("/layout/", http.StripPrefix("/layout/", http.FileServer(http.Dir("templates/layout"))))
 	http.HandleFunc("/login", loginHandler)
