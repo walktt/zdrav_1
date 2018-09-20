@@ -173,6 +173,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 //=============================MAIN=========================
 func main() { //===================DB SETUP=================
+	fmt.Println("Starting on: ", port)
 	session, err := mgo.Dial("mongodb://127.0.0.1")
 	if err != nil {
 		fmt.Println(err)
